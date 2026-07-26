@@ -2,3 +2,6 @@
 A full-stack Airbnb clone built with Node.js, Express, MongoDB, and EJS.
 
 phase 1 part A
+
+Craeted update route
+delete route
