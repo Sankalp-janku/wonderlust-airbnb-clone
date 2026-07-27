@@ -5,12 +5,16 @@ const ejs = require("ejs");
 const path = require("path");
 const Listing = require("./models/listings.js");
 const methodOverride = require("method-override");
+const ejsMate = require("ejs-mate");
 
 
-app.set("view engine",ejs)
+app.engine('ejs',ejsMate);
+app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"views"));
 app.use(express.urlencoded({extended:true})); 
 app.use(methodOverride("_method"));
+app.use(express.static(path.join(__dirname,"/public")));
+
 
 main().then(()=>{
     console.log("conneceted to DB");
@@ -66,8 +70,8 @@ app.put("/listings/:id",async(req,res)=>{
 });
 
 //delete route
-app.delete("/listings/:id/delete",async (req,res)=>{
-    let id = req.params;
+app.delete("/listings/:id",async (req,res)=>{
+    let {id} = req.params;
     await Listing.findByIdAndDelete(id);
     res.redirect("/listings");
 })
