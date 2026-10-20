@@ -3,6 +3,7 @@ body{
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    scroll-behavior: smooth;
 }
 
 /* boilerplate */
@@ -64,7 +65,7 @@ body{
  }
 
  /* cards */
- .card{
+ .listing-card{
     border: none !important;
     margin-top: 2rem;
  }
@@ -132,3 +133,46 @@ body{
     padding-left: 0;
     padding-right: 0;
 }
+.reviewBox{
+   height: auto;
+   width: 50%;
+   /* border: 1px solid black; */
+   box-shadow: 10px 10px 10px black ;
+}
+.reviewRange{
+   width: 30%;
+   margin-left: 50px;
+ }
+ .reviewBtn{
+    margin-left: 46%;
+ }
+ .reviewText{
+   border: 1px solid black;
+   width: 50%;
+   margin-left: 20%;
+ }
+ .reviewHeading{
+   text-align: center;
+   font-size:3em;
+ }
+ .showReview{
+   display: flex;
+   overflow-x: auto;
+   height: 400px;
+   width: 100%;
+   border: 1px solid;
+ }
+ .reviewCard{
+   height: 50%;
+   width: 20%;
+   border: 1px solid black;
+   margin: 2%;
+ }
+ .name{
+   height: 20%;
+   width: 100%;
+ }
+ .review{
+   height: 80%;
+   width: 100%;
+ }
