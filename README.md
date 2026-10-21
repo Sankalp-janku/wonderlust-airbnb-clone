@@ -10,5 +10,11 @@ delete route
 Completed project phase 1 ---->partB.
 
 
+# 20/10/2026
+handling deletions with mongoose middlewares pre and post
+Created review section
+
+
+
 # 21/10/2026
 implementing express router for easy debugging and understanding
