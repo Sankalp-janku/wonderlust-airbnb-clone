@@ -18,3 +18,9 @@ Created review section
 
 # 21/10/2026
 implementing express router for easy debugging and understanding
+
+# 24/10/2026
+reimplementing express routes 
+
+# compltely debugged time took 4hrs
+router understood

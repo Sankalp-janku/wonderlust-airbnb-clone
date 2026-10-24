@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const Listing = require("../models/listings");
 const wrapAsync = require("../utils/wrapAsync.js");
-const {listingSchema , reviewSchema} = require("../schema.js");
 const ExpressError = require("../utils/ExpressError.js");
-const Listing = require("../models/listings.js");
-
-
+const {listingSchema , reviewSchema} = require("../schema.js");
+const Review = require("../models/review.js");
+const mongoose = require("mongoose");
 
 
 //validate error--->joi:-------->listings
@@ -20,19 +20,17 @@ const validateListing = (req,res,err,next)=>{
     }
 }
 
-
-
 //index route
-router.get("/",wrapAsync(async(req,res)=>{
+router.get("/",async(req,res)=>{
     const allListings = await Listing.find({});
     res.render("./listings/index.ejs",{allListings});
-}))
+})
 
 //new form route
 
-router.get("/new",wrapAsync((req,res)=>{
+router.get("/new",(req,res)=>{
     res.render("./listings/form.ejs");
-}))
+})
 //show route
 
 router.get("/:id",wrapAsync(async (req,res,next)=>{
@@ -53,15 +51,15 @@ router.get("/:id",wrapAsync(async (req,res,next)=>{
 //Create route  
 router.post("/new", validateListing,wrapAsync(async(req,res,next)=>{
 
-        // if(!req.body.listing){
-        //     throw new ExpressError(400,"send valid data for listings");
-        // }.
-        //joi error handling
-    //    let result = listingSchema.validate(req.body);
-        // console.log(result);
-    //     if(result.error){
-    //         throw new ExpressError(400,result.error);
-    //     }
+        if(!req.body.listing){
+            throw new ExpressError(400,"send valid data for listings");
+        };
+        // joi error handling;
+       let result = listingSchema.validate(req.body);
+        console.log(result);
+        if(result.error){
+            throw new ExpressError(400,result.error);
+        }
         const newListing = new Listing(req.body.listing);
         await newListing.save();
         res.redirect("/listings");
@@ -97,5 +95,4 @@ router.delete("/:id",wrapAsync(async (req,res)=>{
     res.redirect("/listings");
 }));
 
-
-module.exports =router;
+module.exports = router;
