@@ -24,3 +24,9 @@ reimplementing express routes
 
 # compltely debugged time took 4hrs
 router understood
+
+
+# 07/11/2026
+created session id 
+used connect-flsh
+express session
