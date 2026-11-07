@@ -10,9 +10,8 @@ const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
 const {listingSchema , reviewSchema} = require("./schema.js");
 const Review = require("./models/review.js");
- 
-const listings = require("./routes/listing.js")
-const routes = require("./routes/review.js")
+const session = require("express-session");
+const flash = require("connect-flash");
 
 app.engine('ejs',ejsMate);
 app.set("view engine","ejs");
@@ -22,6 +21,24 @@ app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname,"/public")));
 
 
+const sessionOptions={
+    secret:"mysupersecretcode",
+    resave:false,
+    saveUninitialized:true,
+    cookie:{
+        expires:Date.now()+3*24*60*60*1000,
+        maxAge:3*24*60*60*1000,
+        httpOnly:true
+    }
+};
+
+app.use(session(sessionOptions));
+app.use(flash());
+
+const listings = require("./routes/listing.js")
+const routes = require("./routes/review.js")
+
+
 main().then(()=>{
     console.log("conneceted to DB");
 }).catch((err)=>console.log(err));
@@ -29,16 +46,21 @@ main().then(()=>{
 async function main() {
     mongoose.connect('mongodb://127.0.0.1:27017/wonderlust');
 }
- 
-
-app.use("/listings",listings);
-app.use("/listings/:id/reviews",routes);
-
-//home route
+ //home route
 app.get("/",(req,res)=>{
     console.log("hii i m root");
     res.send("i m roort");
 });
+app.use((req,res,next)=>{
+    res.locals.sucess = req.flash("sucess");// its going to includes(flash.ejs)later included in boilerplate.ejs
+    res.locals.delete = req.flash("delete")
+    next();
+})
+
+app.use("/listings",listings);
+app.use("/listings/:id/reviews",routes);
+
+
 
  
 
