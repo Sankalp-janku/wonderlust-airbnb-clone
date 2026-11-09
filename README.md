@@ -30,3 +30,7 @@ router understood
 created session id 
 used connect-flsh
 express session
+
+# 09/11/26
+passport for authentication
+created usermodel

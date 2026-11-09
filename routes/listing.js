@@ -30,6 +30,7 @@ router.get("/",async(req,res)=>{
 
 router.get("/new",(req,res)=>{
     res.render("./listings/form.ejs");
+    req.flash("click","clicked New Listing Button")
 })
 //show route
 

@@ -12,6 +12,10 @@ const {listingSchema , reviewSchema} = require("./schema.js");
 const Review = require("./models/review.js");
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
+const LocalStratergy = require("passport-local");
+const User = require("./models/user.js");
+
 
 app.engine('ejs',ejsMate);
 app.set("view engine","ejs");
@@ -35,8 +39,18 @@ const sessionOptions={
 app.use(session(sessionOptions));
 app.use(flash());
 
-const listings = require("./routes/listing.js")
-const routes = require("./routes/review.js")
+app.use(passport.initialize());
+app.use(passport.initialize());
+// use static authenticate method of model in LocalStrategy
+passport.use(new LocalStratergy(User.authenticate()));
+// use static serialize and deserialize of model for passport session support
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+const listingRouter = require("./routes/listing.js")
+const reviewRouter = require("./routes/review.js")
+const userRouter = require("./routes/user.js")
 
 
 main().then(()=>{
@@ -51,14 +65,26 @@ app.get("/",(req,res)=>{
     console.log("hii i m root");
     res.send("i m roort");
 });
+
+// flash notifications
 app.use((req,res,next)=>{
     res.locals.sucess = req.flash("sucess");// its going to includes(flash.ejs)later included in boilerplate.ejs
-    res.locals.delete = req.flash("delete")
+    res.locals.delete = req.flash("delete");
+    res.locals.click = req.flash("click");
     next();
 })
 
-app.use("/listings",listings);
-app.use("/listings/:id/reviews",routes);
+app.get("/demoUser",async (req,res)=>{
+    let fakeUser = new User({
+        email:"student@gmail.com",
+        username:"delta-student"
+    });
+    let registeredUser = await User.register(fakeUser,"helloworld");
+})
+
+app.use("/listings",listingRouter);
+app.use("/listings/:id/reviews",reviewRouter);
+app.use("/",userRouter);
 
 
 
