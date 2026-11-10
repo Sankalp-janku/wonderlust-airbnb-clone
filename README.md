@@ -34,3 +34,6 @@ express session
 # 09/11/26
 passport for authentication
 created usermodel
+
+# 10/11/2026
+configuresd email"sankalparjunjanku@gmail.com"to sankalp1349@gmail.com
